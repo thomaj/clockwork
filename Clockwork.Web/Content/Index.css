@@ -1,0 +1,262 @@
+﻿html {
+    --c1: #4ad0c2;
+    --c2: #0b1201;
+    --c3: #083726;
+    --c4: #a6b4ba;
+    --c5: #FA6545;
+    --c6: #FF9780;
+    --c7: #989898;
+    --clockDiameter: 22vh;
+}
+
+body {
+    background: var(--c3);
+    color: var(--c2);
+    font-family: 'Abel', sans-serif;
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+
+#app {
+    height: 100vh;
+    box-sizing: border-box;
+}
+
+
+
+/* mobile phones */
+
+#header {
+    width: 100%;
+    height: 30vh;
+    margin: 0px;
+    padding: 5px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+#header > div {
+    flex-basis: 100%;
+}
+
+#header #time-request-data {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#header #time-request-data > div {
+    flex-basis: 50%;
+}
+
+#header #time-request-data #info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#header #time-request-form {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    padding: 20px;
+}
+#header #time-request-form > * {
+    /*flex-basis: 50%;*/
+}
+
+.light-1 {
+    color: #e1e1e1;
+}
+.light-2 {
+    color: #b4b4b4;
+}
+
+
+
+
+
+
+
+
+
+#body {
+    height: 70vh;
+    overflow-y: auto;
+}
+
+/* Spreadsheet/list styling */
+.list {
+    position: relative;
+    height: 100%;
+}
+
+.list .row {
+    display: flex;
+    justify-content: space-around;
+    height: 40px;
+    width: 100%;
+    font-size: 12px;
+    background: var(--c1);
+    border-bottom: solid 1px #989898;
+}
+
+.list .data {
+    overflow-y: auto;
+}
+
+.list .list-header {
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.list .row > * {
+    flex-basis: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.list .row:not(.list-header) > * {
+    border-right: solid 1px var(--c7);
+}
+.row > *:last-child{
+    border-right: none;
+}
+
+.list .data .row *:nth-child(1) {
+    display: none;
+}
+.list .data .row *:nth-child(4) {
+    display: none;
+}
+
+
+
+button {
+    height: 40px;
+    min-width: 100px;
+    background: var(--c5);
+    color: var(--c2);
+    border: none;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 100ms cubic-bezier(.17,.67,.83,.67);
+}
+
+button:hover {
+    background: var(--c6);
+}
+
+
+
+/* Clock styling */
+#clock-container {
+    position: relative;
+    height: var(--clockDiameter);
+    min-width: calc(var(--clockDiameter) + 30px);
+    display: none;
+}
+
+#clock {
+    background: inherit;
+    height: var(--clockDiameter);
+    width: var(--clockDiameter);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    border: solid 5px var(--c1); 
+    padding: 0px;
+}
+
+#clock #hour {
+    background: var(--c1);
+    width: calc(var(--clockDiameter)/50);
+    height: calc(var(--clockDiameter)/3.5);
+    transform: translateY(-100%);
+}
+
+#clock #minute {
+    background: var(--c1);
+    width: calc(var(--clockDiameter)/60);
+    height: calc(var(--clockDiameter)/2.8);
+    transform: translateY(-100%);
+}
+
+#clock .hand {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform-origin: 50% 100%;
+}
+
+#clock .hour-line {
+    position: absolute;
+    left: 50%;
+    background: var(--c1);
+    width: calc(var(--clockDiameter)/80);
+    height: calc(var(--clockDiameter)/20);
+    transform-origin: 50% calc(var(--clockDiameter)/2);
+}
+#clock .hour-line:nth-of-type(3): {
+    transform: rotate(0deg);
+}
+#clock .hour-line:nth-of-type(4) {
+    transform: rotate(90deg);
+}
+#clock .hour-line:nth-of-type(5) {
+    transform: rotate(180deg);
+}
+#clock .hour-line:nth-of-type(6) {
+    transform: rotate(270deg);
+}
+
+
+
+
+
+
+
+
+/* tablets */
+@media only screen and (min-width: 600px) {
+    #header {
+        flex-direction: row;
+    }
+
+    #header #clock-container {
+        display: inline-block;
+    }
+
+    #header #time-request-data #info {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+   
+}
+
+/* computer screen */
+@media only screen and (min-width: 768px) {
+    button {
+        min-width: 150px;
+        font-size: 20px;
+    }
+
+    .list .data .row {
+        font-size: 15px;
+    }
+
+    .list .data .row *:nth-child(1) {
+        display: inline-flex;
+    }
+
+    .list .data .row *:nth-child(4) {
+        display: inline-flex;
+    }
+}
+    

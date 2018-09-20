@@ -1,21 +1,57 @@
-﻿<script>
-function UserAction() {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            document.getElementById("output").innerHTML = this.responseText;
-        }
-    };
-    xhttp.open("GET", "http://127.0.0.1:5000/api/currenttime", true);
-    xhttp.setRequestHeader("Content-type", "application/json");
-    xhttp.send();
+﻿<link href="~/Content/Index.css" rel="stylesheet" type="text/css" />
 
-}
-</script>
+<div id="app">
+    @* This is the header at the top of the page which displays the time information when requested *@
+    <div id="header">
+        <div id="time-request-data">
+            <div id="clock-container">
+                <div id="clock">
+                    <div id="hour" class="hand" ref="hourHand"></div>
+                    <div id="minute" class="hand" ref="minuteHand"></div>
+                    <div class="hour-line"></div>
+                    <div class="hour-line"></div>
+                    <div class="hour-line"></div>
+                    <div class="hour-line"></div>
+                </div>
+            </div>
+            <div id="info">
+                <h2 class="light-1">{{time(dateTimeObj)}}</h2>
+                <div class="light-2">{{date(dateTimeObj)}}</div>
+            </div>
+        </div>
+        <div id="time-request-form">
+            <button id="requestButton" v-on:click="getTimeAndRequests">GET THE TIME</button>
+            <select ref="timezones" id="timezones" v-model="timezone">
+                @foreach (var tz in @ViewData["TimeZones"] as IReadOnlyCollection<TimeZoneInfo>)
+                {
+                    <option value="@tz">@tz.DisplayName</option>
+                }
+            </select>
+        </div>
+    </div>
 
-<h2>AWH Clockwork Project @ViewData["Version"] on @ViewData["Runtime"]!</h2>
+@* This is the body which contains the list of all of the requests *@
+    <div id="body">
+        <div class="list">
+            <div class="data">
+                <div class="list-header row">
+                    <span>Id</span>
+                    <span>Time</span>
+                    <span>Time Zone</span>
+                    <span>IP Address</span>
+                    <span>UTC Time</span>
+                </div>
+                <div v-for="(req, index) in requests" v-bind:key="index" class="row">
+                    <div>{{req.currentTimeQueryId}}</div>
+                    <div>{{date(req.time)}}, {{time(req.time)}}</div>
+                    <div>{{req.timeZoneRequested}}</div>
+                    <div>{{req.clientIp}}</div>
+                    <div>{{date(req.utcTime)}}, {{time(req.utcTime)}}</div>
+                </div>
 
+            </div>
+        </div>
+    </div>
 
-<button type="submit" onclick="UserAction()">Get the time</button>
-
-<p id="output"></p>
+</div>
+<script type="text/javascript" src="Scripts/Index.js"></script>

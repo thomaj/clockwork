@@ -16,6 +16,7 @@ namespace Clockwork.Web.Controllers
 
             ViewData["Version"] = mvcName.Version.Major + "." + mvcName.Version.Minor;
             ViewData["Runtime"] = isMono ? "Mono" : ".NET";
+            ViewData["TimeZones"] = TimeZoneInfo.GetSystemTimeZones();
 
             return View();
         }
