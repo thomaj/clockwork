@@ -21,12 +21,19 @@
         </div>
         <div id="time-request-form">
             <button id="requestButton" v-on:click="getTimeAndRequests">GET THE TIME</button>
-            <select ref="timezones" id="timezones" v-model="timezone">
+            <select ref="timezones" id="timezones">
                 @foreach (var tz in @ViewData["TimeZones"] as IReadOnlyCollection<TimeZoneInfo>)
                 {
-                    <option value="@tz">@tz.DisplayName</option>
+                        if (@tz.Equals((TimeZoneInfo) @ViewData["CurrentTimeZone"]))
+                        {
+                            <option value="@tz" selected> @tz.DisplayName </option>
+                        } else
+                        {
+                            <option value="@tz"> @tz.DisplayName </option>
+                        }
                 }
             </select>
+            @*<div>@ViewData["CurrentTimeZone"].equals(@ViewData["CurrentTimeZone"])</div>*@
         </div>
     </div>
 

@@ -12,8 +12,6 @@ var app = new Vue({
     mounted: function () {
         // When the page is loaded, send a request to get all of the requests in the database
         this.getAllRequests();
-        // Set up what the time zone is
-        if (this.$refs.timezones[0]) this.timezone = this.$refs.timezones[0].innerText;
     },
     methods: {
         // Takes a Date Object or date string and returns the time in the format "HH:MM ampm"
@@ -91,7 +89,9 @@ var app = new Vue({
         },
         // Sends a request to the API to get the time as well as a request to get all of the requests
         getTimeAndRequests: function () {
-            this.getTime(this.timezone).then(() => {
+            // Not the Vue way, but need to do it this way because an option comes in pre selected
+            let timezone = this.$refs.timezones.options[this.$refs.timezones.selectedIndex].value;
+            this.getTime(timezone).then(() => {
                 this.getAllRequests();
             }).catch((err) => {
                 console.log(err);
