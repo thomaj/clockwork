@@ -25,6 +25,7 @@ namespace Clockwork.API.Controllers
             return Ok(returnVal);
         }
 
+
         // Route: api/currenttime
         //        can also provide 'timezone' parameter (ie. api/currenttime?timezone="US/central"
         [HttpGet]

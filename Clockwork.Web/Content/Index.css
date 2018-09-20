@@ -30,6 +30,7 @@ body {
 #header {
     width: 100%;
     height: 30vh;
+    min-height: 130px;
     margin: 0px;
     padding: 5px;
     box-sizing: border-box;
@@ -54,14 +55,15 @@ body {
 #header #time-request-data #info {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
 }
 
 #header #time-request-form {
     display: flex;
+    flex-direction: column;
     justify-content: space-around;
-    align-items: flex-end;
+    align-items: center;
     padding: 20px;
 }
 
@@ -177,21 +179,31 @@ button:hover {
     position: absolute;
     left: 50%;
     top: 50%;
+    transform: translate(-50%, -100%);
     transform-origin: 50% 100%;
+    background: var(--c1);
+    transition: all 500ms cubic-bezier(.75,.61,.56,1.08);
 }
 
 #clock #hour {
-    background: var(--c1);
     width: calc(var(--clockDiameter)/50);
     height: calc(var(--clockDiameter)/3.5);
-    transform: translateY(-100%);
 }
 
 #clock #minute {
-    background: var(--c1);
     width: calc(var(--clockDiameter)/60);
     height: calc(var(--clockDiameter)/2.8);
-    transform: translateY(-100%);
+}
+
+#clock .dot {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    height: calc(var(--clockDiameter)/20);
+    width: calc(var(--clockDiameter)/20);
+    background: var(--c1);
+    border-radius: 50%;
 }
 
 #clock .hour-line {
@@ -236,6 +248,12 @@ button:hover {
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
+    }
+
+    #header #time-request-form {
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: flex-end;
     }
    
 }
