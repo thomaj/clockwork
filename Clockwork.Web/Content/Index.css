@@ -64,16 +64,6 @@ body {
     align-items: flex-end;
     padding: 20px;
 }
-#header #time-request-form > * {
-    /*flex-basis: 50%;*/
-}
-
-.light-1 {
-    color: #e1e1e1;
-}
-.light-2 {
-    color: #b4b4b4;
-}
 
 
 
@@ -88,10 +78,15 @@ body {
     overflow-y: auto;
 }
 
+
 /* Spreadsheet/list styling */
 .list {
     position: relative;
     height: 100%;
+}
+
+.list .data {
+    overflow-y: auto;
 }
 
 .list .row {
@@ -102,10 +97,6 @@ body {
     font-size: 12px;
     background: var(--c1);
     border-bottom: solid 1px #989898;
-}
-
-.list .data {
-    overflow-y: auto;
 }
 
 .list .list-header {
@@ -127,6 +118,7 @@ body {
     border-right: none;
 }
 
+/* Remove columns that are not displayed on mobile */
 .list .data .row *:nth-child(1) {
     display: none;
 }
@@ -151,6 +143,14 @@ button:hover {
     background: var(--c6);
 }
 
+.light-1 {
+    color: #e1e1e1;
+}
+
+.light-2 {
+    color: #b4b4b4;
+}
+
 
 
 /* Clock styling */
@@ -173,6 +173,13 @@ button:hover {
     padding: 0px;
 }
 
+#clock .hand {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform-origin: 50% 100%;
+}
+
 #clock #hour {
     background: var(--c1);
     width: calc(var(--clockDiameter)/50);
@@ -185,13 +192,6 @@ button:hover {
     width: calc(var(--clockDiameter)/60);
     height: calc(var(--clockDiameter)/2.8);
     transform: translateY(-100%);
-}
-
-#clock .hand {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform-origin: 50% 100%;
 }
 
 #clock .hour-line {
@@ -248,7 +248,7 @@ button:hover {
     }
 
     .list .data .row {
-        font-size: 15px;
+        font-size: 14px;
     }
 
     .list .data .row *:nth-child(1) {
