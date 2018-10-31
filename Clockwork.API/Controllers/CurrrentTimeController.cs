@@ -18,7 +18,7 @@ namespace Clockwork.API.Controllers
             // Get all of the entries in the database
             using (var db = new ClockworkContext())
             {
-                returnVal = (from c in db.CurrentTimeQueries select c).ToArray();
+                returnVal = db.CurrentTimeQueries.ToArray();
             }
 
             // Send the entries back to the client

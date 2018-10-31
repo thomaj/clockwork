@@ -1,5 +1,6 @@
-﻿<link href="~/Content/Index.css" rel="stylesheet" type="text/css" />
+﻿
 
+<link href="~/Content/Index.css" rel="stylesheet" type="text/css" />
 <div id="app">
     @* This is the header at the top of the page which displays the time information when requested *@
     <div id="header">
@@ -16,39 +17,43 @@
                 </div>
             </div>
             <div id="info">
-                <h2 class="light-1">{{time(dateTimeObj)}}</h2>
-                <div class="light-2">{{date(dateTimeObj)}}</div>
+                <div v-if="errors.time">
+                    <div class="light-2">{{errors.time}}</div>
+                </div>
+                <div v-else>
+                    <h2 class="light-1">{{time(dateTimeObj)}}</h2>
+                    <div class="light-2">{{date(dateTimeObj)}}</div>
+                </div>
             </div>
         </div>
         <div id="time-request-form">
             <button id="requestButton" v-on:click="getTimeAndRequests">GET THE TIME</button>
-            <select ref="timezones" id="timezones">
-                @foreach (var tz in @ViewData["TimeZones"] as IReadOnlyCollection<TimeZoneInfo>)
-                {
-                        if (@tz.Equals((TimeZoneInfo) @ViewData["CurrentTimeZone"]))
-                        {
-                            <option value="@tz" selected> @tz.DisplayName </option>
-                        } else
-                        {
-                            <option value="@tz"> @tz.DisplayName </option>
-                        }
-                }
-            </select>
+            @Html.DropDownList("timezone", ViewData["TimeZones"] as SelectList)
         </div>
     </div>
 
-@* This is the body which contains the list of all of the requests *@
+    
+
+    @* This is the body which contains the list of all of the requests *@
     <div id="body">
-        <div class="list">
+        <div>
+            {{filters}}
+        </div>
+        <div v-if="errors.requests" class="center light-2">
+            {{errors.requests}}
+        </div>
+        <div v-else class="list">
             <div class="data">
                 <div class="list-header row">
-                    <span>Id</span>
-                    <span>Time</span>
-                    <span>Time Zone</span>
-                    <span>IP Address</span>
-                    <span>UTC Time</span>
+                    @foreach (var header in new String[][] { new String[] { "Id", "currentTimeQueryId" }, new String[] { "Time", "time" }, new String[] { "Time Zone", "timeZoneRequested" }, new String[] { "IP Address", "clientIp" }, new String[] { "UTC Time", "utcTime" } })
+                    {
+                    <span v-on:click="openFilter('@header[1]')">
+                        <span>@header[0]</span>
+                        <input v-if="isSelectedProperty('@header[1]')" @@keyup.enter="addFilter('@header[1]', '@header[0]')" id="@header[0]" v-model="filterText" type="text"/>
+                    </span>
+                    }
                 </div>
-                <div v-for="(req, index) in requests" v-bind:key="index" class="row">
+                <div v-for="(req, index) in filteredRequests" v-bind:key="index" class="row">
                     <div>{{req.currentTimeQueryId}}</div>
                     <div>{{date(req.time)}}, {{time(req.time)}}</div>
                     <div>{{req.timeZoneRequested}}</div>

@@ -11,13 +11,25 @@ namespace Clockwork.Web.Controllers
     {
         public ActionResult Index()
         {
-            var mvcName = typeof(Controller).Assembly.GetName();
-            var isMono = Type.GetType("Mono.Runtime") != null;
+            var timezones = TimeZoneInfo.GetSystemTimeZones().ToList();
 
-            ViewData["Version"] = mvcName.Version.Major + "." + mvcName.Version.Minor;
-            ViewData["Runtime"] = isMono ? "Mono" : ".NET";
-            ViewData["TimeZones"] = TimeZoneInfo.GetSystemTimeZones();
-            ViewData["CurrentTimeZone"] = TimeZoneInfo.Local;
+            var timeZoneDisplays = timezones.Select(tz =>
+            {
+                String name = tz.DisplayName;
+                int startIndex = Math.Max(name.IndexOf('/') + 1, 0);
+                name = name.Substring(startIndex).Replace('_', ' ');
+                String offset = String.Format("({0:+0;-#}:{1:D2})", tz.BaseUtcOffset.Hours, tz.BaseUtcOffset.Minutes);
+                String text = offset + " " + name;
+
+                return new SelectListItem()
+                {
+                    Text = text,
+                    Value = tz.Id
+                };
+            });
+
+            var list = new SelectList(timeZoneDisplays, "Value", "Text", TimeZoneInfo.Local);
+            ViewData["TimeZones"] = list;
 
             return View();
         }
