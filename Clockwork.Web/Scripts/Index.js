@@ -133,10 +133,13 @@ var app = new Vue({
 
 
 
-        openFilter: function (property) {
-            this.filterText
-            this.filterProperty = property;
-
+        toggleFilter: function (property) {
+            this.filterText = ''
+            if (this.filterProperty == property) {
+                this.filterProperty = '';
+            } else {
+                this.filterProperty = property;
+            }
         },
         isSelectedProperty: function (property) {
             return this.filterProperty == property;
@@ -153,6 +156,14 @@ var app = new Vue({
             }
             this.filters.push(filterObj);
             this.filterText = '';
+        },
+        removeFilter: function (filter) {
+            let index = this.filters.indexOf(filter);
+            if (index < 0) {
+                console.log('Could not find index of filter to remove it');
+            } else {
+                this.filters.splice(index, 1);
+            }
         }
     }
 })

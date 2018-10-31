@@ -36,8 +36,13 @@
 
     @* This is the body which contains the list of all of the requests *@
     <div id="body">
-        <div>
-            {{filters}}
+        <div class="filters">
+            <span v-if="filters.length == 0" class="light-1 center">Click on a heading to add a filter!</span>
+            <ul v-else>
+                <li v-for="(filter, index) in filters" v-bind:key="index" class="filterItem" v-on:click="removeFilter(filter)">
+                    <span><i>{{filter.propertyDisplay}}</i> - {{filter.text}}</span>
+                </li>
+            </ul>
         </div>
         <div v-if="errors.requests" class="center light-2">
             {{errors.requests}}
@@ -45,11 +50,17 @@
         <div v-else class="list">
             <div class="data">
                 <div class="list-header row">
-                    @foreach (var header in new String[][] { new String[] { "Id", "currentTimeQueryId" }, new String[] { "Time", "time" }, new String[] { "Time Zone", "timeZoneRequested" }, new String[] { "IP Address", "clientIp" }, new String[] { "UTC Time", "utcTime" } })
+                    // TODO: Just make it regular html
+                    @foreach (var header in new String[][] {
+                        new String[] { "Id", "currentTimeQueryId" },
+                        new String[] { "Time", "time", "date" },
+                        new String[] { "Time Zone", "timeZoneRequested" },
+                        new String[] { "IP Address", "clientIp" },
+                        new String[] { "UTC Time", "utcTime", "date" } })
                     {
-                    <span v-on:click="openFilter('@header[1]')">
-                        <span>@header[0]</span>
-                        <input v-if="isSelectedProperty('@header[1]')" @@keyup.enter="addFilter('@header[1]', '@header[0]')" id="@header[0]" v-model="filterText" type="text"/>
+                    <span v-on:click="toggleFilter('@header[1]')">
+                        <input v-if="isSelectedProperty('@header[1]')" v-on:click.stop v-on:keyup.enter="addFilter('@header[1]', '@header[0]', '@header[2]')" id="@header[1]" v-model="filterText" type="text"/>
+                        <span v-else>@header[0]</span>
                     </span>
                     }
                 </div>
