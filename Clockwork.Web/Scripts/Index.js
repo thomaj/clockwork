@@ -31,7 +31,6 @@ var app = new Vue({
             }, this.requests)
 
             let currentFilter = this.createFilterObject(this.filterText, this.filterProperty.property, null, this.filterProperty.type)
-
             return filteredByPreiousFilters.filter(currentFilter.func.bind(currentFilter));
         }
     },
@@ -79,7 +78,7 @@ var app = new Vue({
             }
             
             return this.get(query).then(response => {
-                self.errors = '';
+                self.errors.time = '';
                 self.dateTimeObj = response ? new Date(response.time) : undefined;
                 self.updateClock();
             }).catch(err => {
