@@ -13,7 +13,10 @@ var app = new Vue({
             time: ''
         },
         filterText: '',
-        filterProperty: '',
+        filterProperty: {
+            property: '',
+            type: ''
+        },
         filters: []
     },
     mounted: function () {
@@ -27,10 +30,9 @@ var app = new Vue({
                 return list.filter(filterFunc.bind(filter));
             }, this.requests)
 
-            return filteredByPreiousFilters.filter((value) => {
-                let pattern = new RegExp(this.filterText, 'gi');
-                return pattern.test(value[this.filterProperty]);
-            })
+            let currentFilter = this.createFilterObject(this.filterText, this.filterProperty.property, null, this.filterProperty.type)
+
+            return filteredByPreiousFilters.filter(currentFilter.func.bind(currentFilter));
         }
     },
     methods: {
@@ -130,23 +132,33 @@ var app = new Vue({
             })
         },
 
-
-
-
-        toggleFilter: function (property) {
+        /**
+         * Filters!
+         */
+        // Sets the current filter information needed for live filtering
+        toggleFilter: function (property, type) {
             this.filterText = ''
-            if (this.filterProperty == property) {
-                this.filterProperty = '';
+            if (this.filterProperty.property == property) {
+                this.filterProperty.property = '';
+                this.filterProperty.date  = false;
+
             } else {
-                this.filterProperty = property;
+                this.filterProperty.property = property;
+                this.filterProperty.type = type;
+                this.$nextTick(() => {
+                    let inputBox = document.getElementById(property);
+                    if (inputBox) inputBox.focus();
+                })
             }
         },
+        // Returns true if the current selected property is equal to the specified property
         isSelectedProperty: function (property) {
-            return this.filterProperty == property;
+            return this.filterProperty.property == property;
         },
-        addFilter: function (property, propertyDisplay) {
+        // Create a filter object based on the passed in parameters
+        createFilterObject: function (text, property, propertyDisplay, type) {
             let filterObj = {
-                text: this.filterText,
+                text: text,
                 property: property,
                 propertyDisplay: propertyDisplay,
                 func: function (item) {
@@ -154,9 +166,26 @@ var app = new Vue({
                     return pattern.test(item[this.property]);
                 }
             }
+
+            if (type == 'date') {
+                filterObj.func = function (item) {
+                    let date = new Date(item[this.property]);
+                    let str = `${app.date(date)}, ${app.time(date)}`
+                    let pattern = new RegExp(this.text, 'gi');
+                    return pattern.test(str);
+                }
+            }
+
+            return filterObj;
+        },
+        // Adds a filter to the filter list based on the passed in parameters
+        addFilter: function (property, propertyDisplay, type) {
+            let filterObj = this.createFilterObject(this.filterText, property, propertyDisplay, type);
+
             this.filters.push(filterObj);
             this.filterText = '';
         },
+        // Removes the specified from the filters list if it exists
         removeFilter: function (filter) {
             let index = this.filters.indexOf(filter);
             if (index < 0) {
