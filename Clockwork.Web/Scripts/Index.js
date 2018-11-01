@@ -144,10 +144,10 @@ var app = new Vue({
             } else {
                 this.filterProperty.property = property;
                 this.filterProperty.type = type;
-                this.$nextTick(() => {
+                setTimeout(() => {
                     let inputBox = document.getElementById(property);
                     if (inputBox) inputBox.focus();
-                })
+                }, 300);
             }
         },
         // Returns true if the current selected property is equal to the specified property
